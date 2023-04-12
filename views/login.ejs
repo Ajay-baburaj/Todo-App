@@ -1,0 +1,75 @@
+<%- include('partials/head') %>
+
+    <section class="vh-100">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                    <div class="card shadow-2-strong" style="border-radius: 1rem;  ">
+                        <div class="card-body p-5 text-center"
+                            style="box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;">
+                            <form id="loginForm" onsubmit="loginSubmit(event)">
+                                <h3 class="mb-5">Sign in</h3>
+
+                                <div class="form-outline mb-4">
+                                    <input type="email" id="typeEmailX-2" class="form-control form-control-lg"
+                                        name="email" required />
+                                    <label class="form-label" for="typeEmailX-2">Email</label>
+                                </div>
+                                <span class="text-danger" id="emailError"></span>
+                                <div class="form-outline mb-4">
+                                    <input type="password" id="typePasswordX-2" class="form-control form-control-lg"
+                                        name="password" required />
+                                    <label class="form-label" for="typePasswordX-2">Password</label>
+                                </div>
+                                <span class="text-danger" id="passwordError"></span>
+
+                                <!-- Checkbox -->
+
+                                <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.js"></script>
+    <script>
+
+
+
+        function loginSubmit(event) {
+            event.preventDefault();
+            let formData = $("#loginForm").serialize();
+            $.ajax({
+                url: '/login',
+                method: 'post',
+                data: formData,
+                success: (response) => {
+                    console.log(response)
+                    if (response.status) {
+                        localStorage.setItem('accessToken', response.accessToken)
+                        localStorage.setItem('user', response.user)
+                        window.location.href = '/'
+                    } else {
+                        if (response.emailError) {
+                            document.getElementById("emailError").innerHTML = response.msg
+                        }
+                        else if (response.passwordError) {
+                            document.getElementById("passwordError").innerHTML = response.msg
+                        }
+
+                    }
+
+
+
+                }
+
+            })
+        }
+    </script>
+    </body>
+
+    </html>
