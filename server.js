@@ -5,8 +5,8 @@ import cookieParser from 'cookie-parser'
 import nocache from 'nocache'
 import router from './routes/index.js'
 import appendHeader from './middlewares/addHeader.js'
-// import swaggerUI from 'swagger-ui-express'
-// import swaggerDoc from './swagger.json'
+import swaggerUI from 'swagger-ui-express'
+import swaggerDocument from './swagger.json' assert { type: 'json' };
 
 
 
@@ -29,7 +29,7 @@ app.use(cookieParser())
 app.use(nocache())
 app.use(express.urlencoded({ extended: true }))
 app.use(appendHeader)
-// app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(swaggerDoc));
+app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(swaggerDocument))
 
 
 app.use('/',router)
