@@ -1,11 +1,353 @@
 {
-    "swagger":"2.0",
-    "info":{
-        "version":"1.0.0",
-        "title":"Todo App",
-        "description":"its a simple todo webapp",
-        "license":{
-            "name":"MIT"
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Todo App",
+      "description": "A simple todo webapp",
+      "license": {
+        "name": "MIT",
+        "url": "https://opernsource.org/license/MIT"
+      }
+    },
+    "host": "localhost:4000",
+    "basePath": "/",
+    "tags": [
+      {
+        "name": "Todo",
+        "description": "Todo API"
+      }
+    ],
+    "schemes": [
+      "http"
+    ],
+    "consumes": [
+      "application/json"
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "paths": {
+      "/": {
+        "get": {
+          "summary": "Get home page",
+          "description": "Renders the home page of the Todo app",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "text/html": {}
+              }
+            }
+          }
         }
-    }
-}
+      },
+      "/login": {
+        "get": {
+          "summary": "Get login page",
+          "description": "Renders a page with login form",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "text/html": {}
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Submit login form",
+          "description": "Submits a login form with an email and password",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "description": "The email for the account"
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "The password for the account"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful login",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "token": {
+                        "type": "string",
+                        "description": "The authentication token for the user"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "description": "An error message indicating the reason for the failure"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+        "/add/task": {
+          "post": {
+            "summary": "Add a new task to the todo list",
+            "operationId": "addTask",
+            "requestBody": {
+              "description": "Task object",
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "priority": {
+                        "type": "number"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "priority",
+                      "status"
+                    ]
+                  }
+                }
+              }
+            },
+            "responses": {
+              "201": {
+                "description": "Task added successfully",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/Task"
+                    }
+                  }
+                }
+              }
+             
+            }
+          }
+        },
+        "components": {
+            "schemas": {
+              "Task": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "priority": {
+                    "type": "number"
+                  },
+                  "status": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "priority",
+                  "status"
+                ]
+              }
+            }
+          },
+          "/complete/task/{id}": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "ID of the task to complete",
+                "required": true,
+                "schema": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            ],
+            "patch": {
+              "description": "Update the status of a task to completed",
+              "responses": {
+                "201": {
+                  "description": "Task  updated successfully"
+                }
+                
+              }
+            }
+          },
+          "/cancel/task/{id}": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "ID of the task to cancel",
+                "required": true,
+                "type": "integer",
+                "format": "int64"
+              }
+            ],
+            "patch": {
+              "summary": "Cancel a task",
+              "description": "Updates the status of a task to cancelled",
+              "consumes": [
+                "application/json"
+              ],
+              "produces": [
+                "application/json"
+              ],
+              "responses": {
+                "201": {
+                  "description": "Task status updated successfully",
+                  "schema": {
+                    "$ref": "#/definitions/Task"
+                  }
+                },
+                "404": {
+                  "description": "Task not found"
+                },
+                "500": {
+                  "description": "Internal server error"
+                }
+              }
+            }
+          },
+          "/cancel/task/{id}": {
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "ID of the task to cancel",
+                "required": true,
+                "type": "integer",
+                "format": "int64"
+              }
+            ],
+            "patch": {
+              "summary": "Cancel a task",
+              "description": "Updates the status of a task to cancelled",
+              "consumes": [
+                "application/json"
+              ],
+              "produces": [
+                "application/json"
+              ],
+              "responses": {
+                "201": {
+                  "description": "Task status updated successfully",
+                  "schema": {
+                    "$ref": "#/definitions/Task"
+                  }
+                }
+              }
+            }
+          },
+          "/delete/task/{id}": {
+            "delete": {
+              "summary": "Delete a task from the todo list",
+              "description": "Deletes a task from the todo list with the specified id",
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "description": "ID of the task to delete",
+                  "required": true,
+                  "type": "integer"
+                }
+              ],
+            "definitions": {
+                "Task": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "pending",
+                        "in_progress",
+                        "done",
+                        "cancelled"
+                      ]
+                    }
+                  }
+                }
+              },
+              "responses": {
+                "201": {
+                  "description": "Task cancelled successfully",
+                  "schema": {
+                    "$ref": "#/definitions/Task"
+                  }
+                }
+              }
+              
+          }
+        },
+        "/logout": {
+            "get": {
+              "summary": "Logout from the Todo App",
+              "description": "Removes the authorization token from the user's session, effectively logging them out of the Todo App.",
+              "responses": {
+                "201": {
+                  "description": "Logout successful"
+                },
+                "401": {
+                  "description": "Unauthorized"
+                }
+              }
+            }
+          }
+      }
+ }
+
+   
+      
+
+
+   
+    
+
+
+
+      
+  
+
+
