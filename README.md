@@ -53,15 +53,16 @@ Express js
 </br>
 Mongoose
 
-#API
-The API can be accessed at: https://www.example.com/api
+#API Documentation
+The API documentation can be accessed at:https://test.indwear.store/api-docs/
 
 
-#HTML page 
-The HTML page can be accessed at: https://www.example.com/page
+#Live Link
+Todo app can be accessed at : https://test.indwear.store/login
 
+#Log in credentials
 
-
-
+email: user@gmail.com
+password:123
 
 
