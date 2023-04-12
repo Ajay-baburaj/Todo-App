@@ -35,6 +35,6 @@ app.use(appendHeader)
 app.use('/',router)
 
 
-app.listen(process.env.PORT,()=>{
+app.listen(process.env.PORT|| '4000',()=>{
     console.log(`port is running ${process.env.PORT}`)
 })
